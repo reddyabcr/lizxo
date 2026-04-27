@@ -76,7 +76,10 @@ def generate_key():
     admin_secret = request.args.get('secret', '')
     buyer = request.args.get('buyer', 'unknown')
     
-    if admin_secret != "YOUR_ADMIN_SECRET_HERE":
+    # ✅ FIXED: Use env variable instead of hardcoded string
+    ADMIN_SECRET = os.environ.get("ADMIN_SECRET")
+    
+    if admin_secret != ADMIN_SECRET:
         return jsonify({"error": "Unauthorized"}), 401
     
     key_id = secrets.token_hex(8).upper()
