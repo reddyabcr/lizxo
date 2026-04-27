@@ -40,7 +40,7 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'HEAD'])
 def home():
     """Health check endpoint so Render knows the app is alive."""
     return jsonify({"status": "ok", "message": "License server running"})
@@ -105,7 +105,7 @@ def generate_key():
         admin_secret = request.args.get('secret', '')
         buyer = request.args.get('buyer', 'unknown')
         
-        # Read from env variable - set this in Render dashboard
+        # ✅ Read from env variable - set this in Render dashboard
         ADMIN_SECRET = os.environ.get("ADMIN_SECRET")
         
         if not ADMIN_SECRET:
@@ -134,4 +134,4 @@ def generate_key():
 if __name__ == '__main__':
     print("Starting License Server...", file=sys.stderr)
     init_db()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
